@@ -18,10 +18,6 @@ import matplotlib.image as mpimg
 
 import re
 import pandas as pd
-import gspread
-from gspread_dataframe import get_as_dataframe
-from google.colab import auth
-from google.auth import default
 
 
 def _norm(s):

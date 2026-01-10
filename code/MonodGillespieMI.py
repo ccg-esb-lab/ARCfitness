@@ -18,13 +18,6 @@ import matplotlib.image as mpimg
 
 import re
 import pandas as pd
-import gspread
-from gspread_dataframe import get_as_dataframe
-from google.colab import auth
-from google.auth import default
-import uuid
-from gspread_dataframe import get_as_dataframe, set_with_dataframe
-
 def upsert_to_sheet(sheet, tab_name, df_new, key_cols):
     """
     Upsert df_new into a Google Sheet tab by key columns.
@@ -197,8 +190,8 @@ def plotSimulation(time_points, population_values, resource, pathFIGURES='',titl
 
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}simulation_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}simulation_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
 
@@ -339,8 +332,8 @@ def plot_competition(result, labels=None, colors=("C0","C1"), ylog=False, title=
     plt.tight_layout()
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}competition_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}competition_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return axes
@@ -540,8 +533,8 @@ def plot_trajectories_single(res, labelA="control pMBA", labelB="BX",
     plt.tight_layout()
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}trajectories_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}trajectories_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return ax
@@ -600,8 +593,8 @@ def plot_final_frequencies_per_day_single(
     plt.tight_layout()
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}final_freq_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}final_freq_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return ax
@@ -782,8 +775,8 @@ def plot_env_violin(
     fig.tight_layout()
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}env_violin_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}env_violin_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return fig, ax
@@ -888,8 +881,8 @@ def plot_trajectories_mean(
         ax.set_title(title, fontsize=16)
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}trajectories_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}trajectories_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return fig, ax
@@ -1000,8 +993,8 @@ def plot_replicates_daily_freq(
     #    ax.set_title(title, fontsize=16)
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}replicates_daily_freq_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}replicates_daily_freq_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
 
@@ -1102,8 +1095,8 @@ def plot_mean_daily_freq(
 
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}mean_daily_freq_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}mean_daily_freq_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return fig, ax
@@ -1235,8 +1228,8 @@ def plot_freq_time_density(
     plt.tight_layout()
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}freq_time_density_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}freq_time_density_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return fig, ax
@@ -1398,8 +1391,8 @@ def plot_freq_time_with_highlights(
 
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}freq_time_with_highlights_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}freq_time_with_highlights_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return fig, ax
@@ -1574,8 +1567,8 @@ def plot_freq_time_density_with_highlights(
 
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}freq_time_density_with_highlights_{title}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}freq_time_density_with_highlights_{title}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
     return fig, ax
@@ -2145,8 +2138,8 @@ def plot_w_scatter(
 
 
     if pathFIGURES != '':
-            filename = f"{pathFIGURES}w_scatter_{family}.png"
-            plt.savefig(filename, format='png')
+            filename = f"{pathFIGURES}w_scatter_{family}.pdf"
+            plt.savefig(filename, format='pdf')
             print("Exporting %s" % filename)
     plt.show()
 
@@ -2329,7 +2322,7 @@ def plot_w_scatter_highlight(
     if own_fig:
         plt.tight_layout()
         if pathFIGURES:
-            filename = f"{pathFIGURES.rstrip('/')}/w_scatter_highlight_{family}.png"
+            filename = f"{pathFIGURES.rstrip('/')}/w_scatter_highlight_{family}.pdf"
             plt.savefig(filename, dpi=300)
             print(f"Exported: {filename}")
         plt.show()
@@ -2514,22 +2507,22 @@ def make_vertical_panel(pathFIGURES, family, sched_name, save=True, show=True):
     Parameters
     ----------
     pathFIGURES : str
-        Directory where the figure PNG files are stored.
+        Directory where the figure pdf files are stored.
     family : str
         Name of the family (e.g. "dfr", "aa", "bla", "mix").
     sched_name : str
         Name of the schedule/environment (e.g. "anaerobiosis", "aerobiosis", "alternado").
     save : bool, optional
-        If True, saves the combined panel as PNG in the same directory.
+        If True, saves the combined panel as pdf in the same directory.
     show : bool, optional
         If True, displays the panel with plt.show().
     """
 
     # File templates
     filenames = [
-        f"mean_daily_freq_{family}_{sched_name}.png",
-        f"replicates_daily_freq_{family}_{sched_name}.png",
-        f"freq_time_density_{family}_{sched_name}.png"
+        f"mean_daily_freq_{family}_{sched_name}.pdf",
+        f"replicates_daily_freq_{family}_{sched_name}.pdf",
+        f"freq_time_density_{family}_{sched_name}.pdf"
     ]
 
     # Build full paths
@@ -2548,7 +2541,7 @@ def make_vertical_panel(pathFIGURES, family, sched_name, save=True, show=True):
 
     # Save output
     if save:
-        out_file = os.path.join(pathFIGURES, f"panel_{family}_{sched_name}.png")
+        out_file = os.path.join(pathFIGURES, f"panel_{family}_{sched_name}.pdf")
         plt.savefig(out_file, dpi=300, bbox_inches="tight")
         print(f"Saved panel: {out_file}")
 
@@ -2566,18 +2559,18 @@ def make_highlight_panel(pathFIGURES, family, sched_names=[], save=True, show=Tr
     Parameters
     ----------
     pathFIGURES : str
-        Directory where the figure PNG files are stored.
+        Directory where the figure pdf files are stored.
     family : str
         Name of the family (e.g. "dfr", "aa", "bla", "mix").
     save : bool, optional
-        If True, saves the combined panel as PNG in the same directory.
+        If True, saves the combined panel as pdf in the same directory.
     show : bool, optional
         If True, displays the panel with plt.show().
     """
 
     # Build file paths
     filenames = [
-        f"freq_time_density_with_highlights_{family}_{sched_name}.png" for sched_name in sched_names
+        f"freq_time_density_with_highlights_{family}_{sched_name}.pdf" for sched_name in sched_names
     ]
     filepaths = [os.path.join(pathFIGURES, fn) for fn in filenames]
 
@@ -2595,7 +2588,7 @@ def make_highlight_panel(pathFIGURES, family, sched_names=[], save=True, show=Tr
 
     # Save
     if save:
-        out_file = os.path.join(pathFIGURES, f"panel_highlight_{family}.png")
+        out_file = os.path.join(pathFIGURES, f"panel_highlight_{family}.pdf")
         plt.savefig(out_file, dpi=300, bbox_inches="tight")
         print(f"Saved panel: {out_file}")
 
@@ -2614,21 +2607,21 @@ def make_vertical_multi_sched_panel(pathFIGURES, family, sched_names=[], prefix=
     Parameters
     ----------
     pathFIGURES : str
-        Directory where the figure PNG files are stored.
+        Directory where the figure pdf files are stored.
     family : str
         Name of the family (e.g. "dfr", "aa", "bla", "mix").
     prefix : str
         File prefix (e.g. "freq_time_density_with_highlights_").
-        The function will append family + sched_name + ".png".
+        The function will append family + sched_name + ".pdf".
     save : bool, optional
-        If True, saves the combined panel as PNG in the same directory.
+        If True, saves the combined panel as pdf in the same directory.
     show : bool, optional
         If True, displays the panel with plt.show().
     """
 
 
     # Build file paths
-    filenames = [f"{prefix}{family}_{sched}.png" for sched in sched_names]
+    filenames = [f"{prefix}{family}_{sched}.pdf" for sched in sched_names]
     filepaths = [os.path.join(pathFIGURES, fn) for fn in filenames]
 
     # Load images
@@ -2645,7 +2638,7 @@ def make_vertical_multi_sched_panel(pathFIGURES, family, sched_names=[], prefix=
 
     # Save
     if save:
-        out_file = os.path.join(pathFIGURES, f"panel_{prefix}{family}.png")
+        out_file = os.path.join(pathFIGURES, f"panel_{prefix}{family}.pdf")
         plt.savefig(out_file, dpi=300, bbox_inches="tight")
         print(f"Saved panel: {out_file}")
 
