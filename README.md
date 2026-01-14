@@ -7,7 +7,7 @@ The workflow reproduces the full computational pipeline described in the Supplem
 
 ## Notebook Structure
 
-### 1. [`MonodGillespieARC_1parametrizationStrain.ipynb`](MonodGillespieARC_1parametrizationStrain.ipynb)
+### 1. [`MonodGillespieARC_1_parametrizationStrain.ipynb`](MonodGillespieARC_1parametrizationStrain.ipynb)
 Fits growth parameters for individual experimental strains under aerobic and anaerobic conditions.  
 The estimated parameters \((V_i, K_i, c_i)\) are used as inputs for downstream ARC calibration and simulations.
 
@@ -20,7 +20,7 @@ This notebook:
 
 Both experimental and synthetic ARC libraries are exported as calibrated fitness tables.
 
-### 3. [`MonodGillespieMI_2_stability.ipynb`](MonodGillespieMI_2_stability.ipynb)
+### 3. [`MonodGillespieMI_3_stability.ipynb`](MonodGillespieMI_2_stability.ipynb)
 Describes and illustrates the stochastic Monod–Gillespie model.  
 This notebook introduces the resource-explicit formulation, growth–dilution cycles, and validation simulations.
 
@@ -31,7 +31,7 @@ Outputs include time-resolved abundances, final frequencies, and persistence out
 
 ### 5. [`MonodGillespieARC_5_stability_analysis.ipynb`](MonodGillespieARC_5_stability_analysis.ipynb)
 Aggregates simulation outputs and computes population-level statistics, including persistence and rescue probabilities.  
-This notebook generates the figures and summary metrics reported in the main text and Supplementary Information.
+This notebook generates the figures and summary metrics reported in the main manuscript.
 
 ---
 
