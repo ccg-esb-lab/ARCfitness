@@ -24,61 +24,60 @@ def _norm(s):
     return re.sub(r'[^a-z0-9]+', '', str(s).lower())
 
 
+def load_all_fits(csv_path, min_r2=0.9):
+    """
+    Load fitted parameters from a CSV file and build a lookup map.
 
-def load_exp_fitness(sheet, tab='fitness_aerobiosis'):
-    ws = sheet.worksheet(tab)
-    df = (get_as_dataframe(ws, header=0, evaluate_formulas=True)
-          .dropna(how='all').dropna(axis=1, how='all'))
-    rep_cols = [c for c in df.columns if str(c).strip().isdigit()]
-    if 'mean' in df.columns:
-        df['w_exp'] = pd.to_numeric(df['mean'], errors='coerce')
-    else:
-        df['w_exp'] = pd.to_numeric(df[rep_cols], errors='coerce').mean(axis=1)
-    df = df.rename(columns={'ARC':'strain'}).dropna(subset=['strain','w_exp'])
-    df['_key'] = df['strain'].map(_norm)
-    return df[['strain','w_exp','_key']]
+    Parameters:
+    - csv_path: path to the CSV created by save_fit_to_csv.
+    - min_r2: minimum R2 threshold applied if the column exists.
 
-def load_all_fits(sheet, tab="params_fits", min_r2=0.9):
-    ws = sheet.worksheet(tab)
-    df = (get_as_dataframe(ws, header=0, evaluate_formulas=False)
-          .dropna(how='all').dropna(axis=1, how='all'))
-    if df.empty:
-        raise ValueError(f"No rows in '{tab}' tab.")
+    Returns:
+    - fits_df: DataFrame of all fits (optionally filtered by R2).
+    - param_map: dict keyed by (family, strain) with fitted parameters.
+    """
+    fits_df = pd.read_csv(csv_path).dropna(how="all").dropna(axis=1, how="all")
+    if fits_df.empty:
+        raise ValueError(f"No rows in '{csv_path}'.")
 
-    # Ensure correct types
-    df = df.astype({'family':'string','strain':'string'})
+    fits_df["family"] = fits_df["family"].astype("string")
+    fits_df["strain"] = fits_df["strain"].astype("string")
 
-    # Filter by R² if present
-    if 'R2' in df.columns:
-        df = df[df['R2'] >= min_r2]
+    if "R2" in fits_df.columns:
+        fits_df = fits_df[fits_df["R2"] >= min_r2].reset_index(drop=True)
 
     param_map = {}
-    for _, r in df.iterrows():
-        key = (str(r['family']), str(r['strain']))
+    for _, r in fits_df.iterrows():
+        key = (str(r["family"]), str(r["strain"]))
         param_map[key] = {
-            'Vmax': float(r['Vmax']),
-            'K':          float(r['K']),
-            'c':          float(r['c']),
-            'N0':         float(r.get('N0_cells', 2e8)),  # fallback
-            'R2':         float(r['R2'])
+            "Vmax": float(r["Vmax"]),
+            "K": float(r["K"]),
+            "c": float(r["c"]),
+            "N0": float(r.get("N0_cells", 2e8)),
+            "R2": float(r.get("R2", np.nan)),
         }
-    return df, param_map
+
+    return fits_df, param_map
 
 
 
 def get_params(fits_df, family, strain):
-    if family:  # only filter by family if provided
-        row = fits_df[(fits_df['family'] == family) & (fits_df['strain'] == strain)]
-    else:  # no family specified → only filter by strain
-        row = fits_df[fits_df['strain'] == strain]
+    """
+    Retrieve the first matching parameter set for a given strain and family.
+    If family is an empty string or None, match only on strain.
+    """
+    if family:
+        row = fits_df[(fits_df["family"] == family) & (fits_df["strain"] == strain)]
+    else:
+        row = fits_df[fits_df["strain"] == strain]
 
     if row.empty:
         raise ValueError(f"No parameters found for {strain} ({family if family else 'any family'})")
 
     return {
-        'Vmax': row['Vmax'].iloc[0],
-        'K':          row['K'].iloc[0],
-        'c':          row['c'].iloc[0],
+        "Vmax": float(row["Vmax"].iloc[0]),
+        "K": float(row["K"].iloc[0]),
+        "c": float(row["c"].iloc[0]),
     }
 
 
@@ -110,31 +109,6 @@ def load_exp_fitness(sheet, tab='fitness_aerobiosis'):
     df['_key'] = df['strain'].map(_norm)
     return df[['strain','w_exp','w_exp_std','_key']]
 
-def load_all_fits(sheet, tab="params_fits", min_r2=0.9):
-    ws = sheet.worksheet(tab)
-    df = (get_as_dataframe(ws, header=0, evaluate_formulas=False)
-          .dropna(how='all').dropna(axis=1, how='all'))
-    if df.empty:
-        raise ValueError(f"No rows in '{tab}' tab.")
-
-    df = df.astype({'family':'string','strain':'string'})
-
-    # <<< make sure R2 is numeric
-    if 'R2' in df.columns:
-        df['R2'] = pd.to_numeric(df['R2'], errors='coerce')
-        df = df[df['R2'] >= float(min_r2)]
-
-    param_map = {}
-    for _, r in df.iterrows():
-        key = (str(r['family']), str(r['strain']))
-        param_map[key] = {
-            'Vmax': float(r['Vmax']),
-            'K':          float(r['K']),
-            'c':          float(r['c']),
-            'N0':         float(r.get('N0_cells', 2e8)),
-            'R2':         float(r.get('R2', float('nan')))
-        }
-    return df, param_map
 
 def attach_family_to_exp(exp_df, fits_df, verbose=True, preview_n=10):
     import re
